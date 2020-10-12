@@ -1,12 +1,13 @@
 package gov.hvtesting;
 
 import org.junit.runner.RunWith;
-import cucumber.api.junit.Cucumber;
-import cucumber.api.CucumberOptions;
 
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions( plugin = {"pretty","html:target/html-report","json:target/cucumber.json"},
-    features = {"src/test/java/gov/hvtesting/features/"})
+@CucumberOptions(plugin = { "pretty", "html:out" },
+    features = { "src/test/java/gov/hvtesting/Features/" },
+    glue = { "gov.hvtesting" })
 public class TestRunner {
 }
