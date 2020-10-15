@@ -6,6 +6,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,5 +24,13 @@ public class DateUtil {
     public LocalDate getLastMonday() {
         LocalDate lastMonday = LocalDate.now().with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
         return lastMonday;
+    }
+
+    public Date getUtcNow() throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date expectedLastUpdatedOn = localDateFormat.parse(simpleDateFormat.format(new Date()));
+        return expectedLastUpdatedOn;
     }
 }
