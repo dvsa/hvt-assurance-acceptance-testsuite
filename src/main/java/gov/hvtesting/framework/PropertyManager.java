@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class PropertyManager {
-    private static PropertyManager instance;
     private static final Object lock = new Object();
     private static final String LOCAL_PROPERTIES_FILE_PATH = "src/test/resources/test.properties";
     private static final String REMOTE_PROPERTIES_FILE_PATH = "src/test/resources/remote.properties";
-
+    private static PropertyManager instance;
     private static Boolean isLocal;
     private static String url;
     private static String secret;
@@ -18,7 +17,7 @@ public class PropertyManager {
     private static String jenkinsUrl;
     private static String sendReminderEmailJobName;
 
-    public static PropertyManager getInstance (Boolean isLocal) {
+    public static PropertyManager getInstance(Boolean isLocal) {
         String propertiesFilePath = isLocal ? LOCAL_PROPERTIES_FILE_PATH : REMOTE_PROPERTIES_FILE_PATH;
         if (instance == null) {
             synchronized (lock) {
@@ -45,27 +44,27 @@ public class PropertyManager {
         sendReminderEmailJobName = prop.getProperty("test.SendReminderEmailJobName");
     }
 
-    public String getURL () {
+    public String getURL() {
         return url;
     }
 
-    public Boolean isLocal () {
+    public Boolean isLocal() {
         return isLocal;
     }
 
-    public String getSecret () {
+    public String getSecret() {
         return secret;
     }
 
-    public String getUpdateAvailabilityUrl () {
+    public String getUpdateAvailabilityUrl() {
         return updateAvailabilityUrl;
     }
 
-    public String getJenkinsUrl () {
+    public String getJenkinsUrl() {
         return jenkinsUrl;
     }
 
-    public String getSendReminderEmailJobName () {
+    public String getSendReminderEmailJobName() {
         return sendReminderEmailJobName;
     }
 }
