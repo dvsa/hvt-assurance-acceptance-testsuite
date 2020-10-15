@@ -27,7 +27,6 @@ public class ConfirmationPage extends BasePage {
     protected String availabilityDatesId = "availability-dates";
     protected String availabilityPanelId = "availability-panel";
     protected String lastUpdatedOnId = "last-updated-date";
-    protected String searchForNearestAtfLinkText = "search for their nearest test facility";
     protected String feedbackLinkText = "What did you think of this service?";
     private DateUtil dateUtil;
 
@@ -63,9 +62,6 @@ public class ConfirmationPage extends BasePage {
     }
 
     public ConfirmationPage checkLinksAreVisible() {
-        WebElement searchForAtfLink = getElement(By.linkText(searchForNearestAtfLinkText));
-        assertThat(searchForAtfLink.isDisplayed(), is(true));
-
         WebElement feedbackLink = getElement(By.linkText(feedbackLinkText));
         assertThat(feedbackLink.isDisplayed(), is(true));
         return this;
@@ -82,6 +78,13 @@ public class ConfirmationPage extends BasePage {
         MatcherAssert.assertThat(startDate, DateMatchers.sameDay(expectedStartDate));
         MatcherAssert.assertThat(endDate, DateMatchers.sameDay(expectedEndDate));
         return this;
+    }
+
+    public String getAtfName(){
+        return getElementText(By.id(availabilityPanelId))
+            .replace(someAvailabilityText, "")
+            .replace(fullyBookedText, "")
+            .trim();
     }
 
     private Date extractStartDate(String input) throws ParseException {
