@@ -12,6 +12,8 @@ mvn test
 ## To run selected test(s), described with @myTag:.
 mvn test -Dcucumber.filter.tags="@myTag"
 ```
+After every run new cucumber Test Report is generated and can be found in `target/cucumber-reports.html`
+
 #GOV.UK Notify setup
 In order to use GOV.UK Notify API properly, initial setup is required:
 1. Go to https://www.notifications.service.gov.uk/documentation
