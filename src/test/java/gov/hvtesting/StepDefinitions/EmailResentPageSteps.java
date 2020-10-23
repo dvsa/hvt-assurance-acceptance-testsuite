@@ -2,6 +2,7 @@ package gov.hvtesting.StepDefinitions;
 
 import gov.hvtesting.framework.TestContext;
 import gov.hvtesting.pages.EmailResentPage;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 public class EmailResentPageSteps {

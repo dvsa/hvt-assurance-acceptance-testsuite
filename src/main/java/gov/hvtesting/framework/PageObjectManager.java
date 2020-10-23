@@ -5,6 +5,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import gov.hvtesting.pages.ConfirmationPage;
 import gov.hvtesting.pages.EmailResentPage;
 import gov.hvtesting.pages.ExpirationPage;
+import gov.hvtesting.pages.NearestAtfResultsPage;
+import gov.hvtesting.pages.NearestAtfSearchPage;
 import gov.hvtesting.pages.ServiceUnavailablePage;
 
 public class PageObjectManager {
@@ -14,6 +16,8 @@ public class PageObjectManager {
     private ExpirationPage expirationPage;
     private EmailResentPage emailResentPage;
     private ServiceUnavailablePage serviceUnavailablePage;
+    private NearestAtfResultsPage nearestAtfResultsPage;
+    private NearestAtfSearchPage nearestAtfSearchPage;
 
     public PageObjectManager(RemoteWebDriver driver) {
         this.driver = driver;
@@ -33,5 +37,13 @@ public class PageObjectManager {
 
     public EmailResentPage getEmailResentPage(){
         return (emailResentPage == null) ? emailResentPage = new EmailResentPage(driver) : emailResentPage;
+    }
+
+    public NearestAtfSearchPage getNearestAtfSearchPage(){
+        return (nearestAtfSearchPage == null) ? nearestAtfSearchPage = new NearestAtfSearchPage(driver) : nearestAtfSearchPage;
+    }
+
+    public NearestAtfResultsPage getNearestAtfResultsPage(){
+        return (nearestAtfResultsPage == null) ? nearestAtfResultsPage = new NearestAtfResultsPage(driver) : nearestAtfResultsPage;
     }
 }
