@@ -14,6 +14,7 @@ import java.util.Date;
 import org.exparity.hamcrest.date.DateMatchers;
 
 import gov.hvtesting.framework.DynamoDbApi;
+import gov.hvtesting.framework.PropertyManager;
 import gov.hvtesting.framework.TestContext;
 import gov.hvtesting.pages.ConfirmationPage;
 import gov.hvtesting.utils.DateUtil;
@@ -23,7 +24,7 @@ import io.restassured.response.Response;
 
 public class DynamoDbSteps {
 
-    private final static String ATF_ID = "070dedfe-84f2-440f-b485-e7a1113a389e";
+    private String ATF_ID;
     private ConfirmationPage confirmationPage;
     private TestContext testContext;
     private DateUtil dateUtil;
@@ -32,6 +33,7 @@ public class DynamoDbSteps {
         testContext = context;
         confirmationPage = testContext.getPageObjectManager().getConfirmationPage();
         dateUtil = new DateUtil();
+        ATF_ID = PropertyManager.getInstance(true).getAtfId();
     }
 
     @Then("^ATF availability is set to (some availability|fully booked)$")

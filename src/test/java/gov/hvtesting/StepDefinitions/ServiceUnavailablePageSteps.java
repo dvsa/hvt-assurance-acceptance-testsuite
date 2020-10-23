@@ -1,5 +1,6 @@
 package gov.hvtesting.StepDefinitions;
 
+import gov.hvtesting.framework.PropertyManager;
 import gov.hvtesting.framework.TestContext;
 import gov.hvtesting.framework.TokenGenerator;
 import gov.hvtesting.pages.ServiceUnavailablePage;
@@ -8,7 +9,7 @@ import io.cucumber.java.en.Then;
 
 public class ServiceUnavailablePageSteps {
 
-    private final static String ATF_ID = "070dedfe-84f2-440f-b485-e7a1113a389e";
+    private String ATF_ID;
     private final ServiceUnavailablePage serviceUnavailablePage;
     private final TestContext testContext;
     private final TokenGenerator tokenGenerator;
@@ -17,6 +18,7 @@ public class ServiceUnavailablePageSteps {
         testContext = context;
         serviceUnavailablePage = testContext.getPageObjectManager().getServiceUnavailablePage();
         tokenGenerator = new TokenGenerator();
+        ATF_ID = PropertyManager.getInstance(true).getAtfId();
     }
 
     @Given("I choose to fully booked link with invalid token for a {string}")
