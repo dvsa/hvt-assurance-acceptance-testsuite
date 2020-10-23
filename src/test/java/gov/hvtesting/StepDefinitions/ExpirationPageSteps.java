@@ -1,5 +1,6 @@
 package gov.hvtesting.StepDefinitions;
 
+import gov.hvtesting.framework.PropertyManager;
 import gov.hvtesting.framework.TestContext;
 import gov.hvtesting.framework.TokenGenerator;
 import gov.hvtesting.pages.ExpirationPage;
@@ -9,7 +10,7 @@ import io.cucumber.java.en.When;
 
 public class ExpirationPageSteps {
 
-    private final static String ATF_ID = "070dedfe-84f2-440f-b485-e7a1113a389e";
+    private String ATF_ID;
     private ExpirationPage expirationPage;
     private TestContext testContext;
     private TokenGenerator tokenGenerator;
@@ -18,6 +19,7 @@ public class ExpirationPageSteps {
         testContext = context;
         expirationPage = testContext.getPageObjectManager().getExpirationPage();
         tokenGenerator = new TokenGenerator();
+        ATF_ID = PropertyManager.getInstance(true).getAtfId();
     }
 
     @When("^I choose to (fully booked|some availability) link with expired link$")

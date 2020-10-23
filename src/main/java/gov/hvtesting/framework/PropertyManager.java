@@ -16,6 +16,10 @@ public class PropertyManager {
     private static String updateAvailabilityUrl;
     private static String jenkinsUrl;
     private static String sendReminderEmailJobName;
+    private static String searchNearestAtfUrl;
+    private static String readApiPort;
+    private static String readApiHost;
+    private static String atfId;
 
     public static PropertyManager getInstance(Boolean isLocal) {
         String propertiesFilePath = isLocal ? LOCAL_PROPERTIES_FILE_PATH : REMOTE_PROPERTIES_FILE_PATH;
@@ -42,6 +46,10 @@ public class PropertyManager {
         updateAvailabilityUrl = prop.getProperty("test.updateAvailabilityUrl");
         jenkinsUrl = prop.getProperty("test.jenkinsUrl");
         sendReminderEmailJobName = prop.getProperty("test.SendReminderEmailJobName");
+        searchNearestAtfUrl = prop.getProperty("test.searchNearestAtfUrl");
+        readApiHost = prop.getProperty("test.readApiHost");
+        readApiPort = prop.getProperty("test.readApiPort");
+        atfId = prop.getProperty("test.atfId");
     }
 
     public String getURL() {
@@ -66,5 +74,25 @@ public class PropertyManager {
 
     public String getSendReminderEmailJobName() {
         return sendReminderEmailJobName;
+    }
+
+    public String getSearchNearestAtfUrl() {
+        return searchNearestAtfUrl;
+    }
+
+    public String getReadApiPort() {
+        return readApiPort;
+    }
+
+    public String getReadApiHost() {
+        return readApiHost;
+    }
+
+    public String getAtfId() {
+        return atfId;
+    }
+
+    public void setAtfId(String id) {
+        atfId = id;
     }
 }
