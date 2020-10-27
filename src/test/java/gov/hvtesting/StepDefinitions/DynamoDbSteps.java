@@ -67,6 +67,6 @@ public class DynamoDbSteps {
         String lastUpdatedOn = response.jsonPath().get("availability.lastUpdated");
         Date lastUpdatedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(lastUpdatedOn);
         Date expectedLastUpdatedOn = dateUtil.getUtcNow();
-        assertThat(lastUpdatedDate, not(DateMatchers.within(20, ChronoUnit.SECONDS, expectedLastUpdatedOn)));
+        assertThat(lastUpdatedDate, not(DateMatchers.within(10, ChronoUnit.SECONDS, expectedLastUpdatedOn)));
     }
 }
