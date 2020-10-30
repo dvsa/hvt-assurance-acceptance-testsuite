@@ -35,6 +35,7 @@ public class NearestAtfResultsPage extends BasePage {
     private String notTestedAtThisCentreXpath = ".//p[text()='Not tested at this centre']/following-sibling::*[1][name()='ul']";
     private String siteRestrictionsXpath = ".//p[text()='Site restrictions']/following-sibling::*[1][name()='ul']";
     private String categoryLinkXpath = ".//a[contains(text(),'category')]";
+    private String availabilityStatusXpath = ".//strong";
     private String backButtonId = "back-link";
     private String pageLinkClass = "pagination__link";
     private String nextPageButtonXpath = "//a[@aria-label='Next page']";
@@ -58,6 +59,10 @@ public class NearestAtfResultsPage extends BasePage {
 
     public void clickBackButton() {
         clickElement(By.id(backButtonId));
+    }
+
+    public void clickNextButton() {
+        clickElement(By.xpath(nextPageButtonXpath));
     }
 
     public void checkResultsList() {
@@ -176,5 +181,13 @@ public class NearestAtfResultsPage extends BasePage {
                 expectedAtfsWithNoInfo.put(atf);
             }
         }
+    }
+
+    public void checkAtfStatus(String atfName, String availability) {
+        List<WebElement> resultsElements = getElements(By.xpath(resultListElementXpath));
+        WebElement atfElement = getElementsWithText(resultsElements, atfName).get(0);
+        String atfAvailablityStatus = atfElement.findElement(By.xpath(availabilityStatusXpath)).getText();
+
+        assertThat(atfAvailablityStatus, is(equalTo(availability)));
     }
 }

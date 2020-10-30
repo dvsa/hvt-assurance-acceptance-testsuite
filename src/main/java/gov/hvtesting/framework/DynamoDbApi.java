@@ -2,6 +2,9 @@ package gov.hvtesting.framework;
 
 import static io.restassured.RestAssured.given;
 
+import java.util.HashMap;
+import java.util.List;
+
 import io.restassured.response.Response;
 
 public class DynamoDbApi {
@@ -39,6 +42,15 @@ public class DynamoDbApi {
     public String getAtfId()  {
         Response response = getNearestAtfs();
         String id = response.getBody().jsonPath().getString("Items.id[0]");
+        return id;
+    }
+
+    public String getAtfId(String atfName)  {
+        Response response = getNearestAtfs();
+        HashMap<String, String> aa = new HashMap<String, String>();
+        List<HashMap<String,String>> items = response.getBody().jsonPath().getList("Items");
+         items.stream().forEach(x->aa.put(x.get("name"), x.get("id")));
+         String id = aa.get(atfName);
         return id;
     }
 }
