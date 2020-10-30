@@ -9,10 +9,12 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.core.Is.is;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.hamcrest.Matchers;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
@@ -29,6 +31,10 @@ public class NearestAtfResultsPage extends BasePage {
     protected RemoteWebDriver driver;
     private String headerId = "govuk-heading-xl";
     private String resultListElementXpath = "//ul[@class='govuk-list']";
+    private String testedAtThisCentreXpath = ".//p[text()='Tested at this centre']/following-sibling::*[1][name()='ul']";
+    private String notTestedAtThisCentreXpath = ".//p[text()='Not tested at this centre']/following-sibling::*[1][name()='ul']";
+    private String siteRestrictionsXpath = ".//p[text()='Site restrictions']/following-sibling::*[1][name()='ul']";
+    private String categoryLinkXpath = ".//a[contains(text(),'category')]";
     private String backButtonId = "back-link";
     private String pageLinkClass = "pagination__link";
     private String nextPageButtonXpath = "//a[@aria-label='Next page']";
@@ -112,6 +118,9 @@ public class NearestAtfResultsPage extends BasePage {
             String expectedAtfPostcode = expectedAtf.getJSONObject("address").getString("postcode");
             String expectedAtfPhone = expectedAtf.getString("phone");
             String expectedAtfEmail = expectedAtf.getString("email");
+            JSONArray expectedTestedAtThisCentre = expectedAtf.getJSONArray("inclusions");
+            JSONArray expectedNotTestedAtThisCentre = expectedAtf.getJSONArray("exclusions");
+            JSONArray expectedSiteRestrictions = expectedAtf.getJSONArray("restrictions");
 
             assertThat(actualAtfName, is(equalTo(expectedAtfName)));
             assertThat(actualAtfAddress, is(equalTo(expectedAtfAddress.trim())));
@@ -119,6 +128,24 @@ public class NearestAtfResultsPage extends BasePage {
             assertThat(actualAtfPostcode, is(equalTo(expectedAtfPostcode)));
             assertThat(actualAtfPhone, is(equalTo(expectedAtfPhone)));
             assertThat(actualAtfEmail, is(equalTo(expectedAtfEmail)));
+            checkAdditionalInformation(actualAtf, expectedTestedAtThisCentre, testedAtThisCentreXpath);
+            checkAdditionalInformation(actualAtf, expectedNotTestedAtThisCentre, notTestedAtThisCentreXpath);
+            checkAdditionalInformation(actualAtf, expectedSiteRestrictions, siteRestrictionsXpath);
+        }
+    }
+
+    private void checkAdditionalInformation(WebElement actualAtf, JSONArray expectedData, String xpath){
+        List<String> expectedDataList = expectedData.toList().stream().map(String::valueOf).collect(Collectors.toList());
+        if(expectedDataList.size()>0){
+            List<String> actualData = Arrays.stream(actualAtf.findElement(By.xpath(xpath)).getText().split("\n"))
+                .map(String::valueOf).collect(Collectors.toList());
+            assertThat(actualData, Matchers.equalTo(expectedDataList));
+            if(expectedDataList.toString().contains("category")){
+                WebElement categoryLink = actualAtf.findElement(By.xpath(categoryLinkXpath));
+                assertThat(categoryLink.isDisplayed(), is(true));
+            }
+        } else {
+            assertThat(actualAtf.findElements(By.xpath(xpath)), is(empty()));
         }
     }
 
