@@ -20,7 +20,6 @@ public class NearestAtfResultPageSteps {
         //todo number will be applied with pagination
         //todo order to be checked
         nearestAtfResultsPage.checkResultsList();
-        //todo check other info: tested at this centre...
 
     }
 
