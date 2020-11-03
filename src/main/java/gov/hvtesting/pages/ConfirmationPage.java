@@ -72,8 +72,8 @@ public class ConfirmationPage extends BasePage {
         Date startDate = extractStartDate(datesText);
         Date endDate = extractEndDate(datesText);
 
-        Date expectedStartDate = Date.from(dateUtil.getLastMonday().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date expectedEndDate = Date.from(dateUtil.getLastMonday().plusDays(27).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date expectedStartDate = Date.from(dateUtil.getNextMonday().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date expectedEndDate = Date.from(dateUtil.getNextMonday().plusDays(28).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         MatcherAssert.assertThat(startDate, DateMatchers.sameDay(expectedStartDate));
         MatcherAssert.assertThat(endDate, DateMatchers.sameDay(expectedEndDate));

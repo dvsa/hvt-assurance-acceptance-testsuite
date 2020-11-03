@@ -20,6 +20,8 @@ public class PropertyManager {
     private static String readApiPort;
     private static String readApiHost;
     private static String atfId;
+    private static String tokenGeneratorHost;
+    private static String tokenGeneratorPort;
 
     public static PropertyManager getInstance(Boolean isLocal) {
         String propertiesFilePath = isLocal ? LOCAL_PROPERTIES_FILE_PATH : REMOTE_PROPERTIES_FILE_PATH;
@@ -50,6 +52,8 @@ public class PropertyManager {
         readApiHost = prop.getProperty("test.readApiHost");
         readApiPort = prop.getProperty("test.readApiPort");
         atfId = prop.getProperty("test.atfId");
+        tokenGeneratorHost = prop.getProperty("test.tokenGeneratorHost");
+        tokenGeneratorPort = prop.getProperty("test.tokenGeneratorPort");
     }
 
     public String getURL() {
@@ -94,5 +98,13 @@ public class PropertyManager {
 
     public void setAtfId(String id) {
         atfId = id;
+    }
+
+    public String getTokenGeneratorHost() {
+        return tokenGeneratorHost;
+    }
+
+    public String getTokenGeneratorPort() {
+        return tokenGeneratorPort;
     }
 }

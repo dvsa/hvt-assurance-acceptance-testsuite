@@ -1,76 +1,25 @@
 package gov.hvtesting.framework;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
+import static io.restassured.RestAssured.given;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-
-import gov.hvtesting.utils.DateUtil;
+import io.restassured.response.Response;
 
 public class TokenGenerator {
 
-    private static final Long FAR_EXPIRATION_DATE = 1908187200l;
+    private String TOKEN_GENERATOR_HOST;
+    private int TOKEN_GENERATOR_PORT;
 
-    public String getToken(Boolean isAvailable, String atf, Boolean isExpired) {
-        String secret = PropertyManager.getInstance(true).getSecret();
-        return getToken(isAvailable, atf, isExpired, secret);
+    public TokenGenerator() {
+        TOKEN_GENERATOR_HOST = PropertyManager.getInstance(true).getTokenGeneratorHost();
+        TOKEN_GENERATOR_PORT = Integer.decode(PropertyManager.getInstance(true).getTokenGeneratorPort());
     }
 
-    public String getToken(Boolean isAvailable, String atf, Boolean isExpired, String secret) {
-
-        Long issuedAt = System.currentTimeMillis() / 1000l;
-
-        Long expirationDateEnoch = FAR_EXPIRATION_DATE;
-        if (isExpired) {
-            expirationDateEnoch = LocalDate.now().minusDays(1).toEpochSecond(LocalTime.now(), ZoneOffset.UTC);
-        }
-        String token = JWT.create()
-            .withClaim("startDate", getStartDateEpoch())
-            .withClaim("endDate", getEndDateEpoch())
-            .withClaim("isAvailable", isAvailable)
-            .withClaim("iat", issuedAt)
-            .withClaim("exp", expirationDateEnoch)
-            .withClaim("iss", "https://book-hgv-bus-trailer-mot.service.gov.uk")
-            .withClaim("sub", atf)
-            .sign(Algorithm.HMAC256(secret));
-
-        return token;
-    }
-
-    public String getTokenWithMissingPayload(Boolean isAvailable, String atf, Boolean isExpired) {
-
-        Long issuedAt = System.currentTimeMillis() / 1000l;
-
-        String secret = PropertyManager.getInstance(true).getSecret();
-
-        Long expirationDateEnoch = FAR_EXPIRATION_DATE;
-        if (isExpired) {
-            expirationDateEnoch = LocalDate.now().minusDays(1).toEpochSecond(LocalTime.now(), ZoneOffset.UTC);
-        }
-        String token = JWT.create()
-            .withClaim("endDate", getEndDateEpoch())
-            .withClaim("isAvailable", isAvailable)
-            .withClaim("iat", issuedAt)
-            .withClaim("exp", expirationDateEnoch)
-            .withClaim("iss", "https://book-hgv-bus-trailer-mot.service.gov.uk")
-            .withClaim("sub", atf)
-            .sign(Algorithm.HMAC256(secret));
-
-        return token;
-    }
-
-    private Long getStartDateEpoch() {
-        DateUtil dateUtil = new DateUtil();
-        LocalDate lastMonday = dateUtil.getLastMonday();
-        return lastMonday.toEpochSecond(LocalTime.of(8, 0), ZoneOffset.UTC);
-    }
-
-    private Long getEndDateEpoch() {
-        DateUtil dateUtil = new DateUtil();
-        LocalDate lastMonday = dateUtil.getLastMonday();
-        LocalDate endDate = lastMonday.plusDays(27);
-        return endDate.toEpochSecond(LocalTime.of(17, 0), ZoneOffset.UTC);
+    public void generateToken(String atfId) {
+        Response response = given().baseUri(TOKEN_GENERATOR_HOST)
+            .port(TOKEN_GENERATOR_PORT)
+            .queryParam("atfId", atfId)
+            .when()
+            .post();
+        response.then().statusCode(200);
     }
 }

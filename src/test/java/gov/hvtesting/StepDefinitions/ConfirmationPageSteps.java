@@ -26,17 +26,19 @@ public class ConfirmationPageSteps {
     }
 
     @And("^I choose to (fully booked|some availability) link$")
-    public void iChooseToFullyBookedLink(String availability) {
+    public void iChooseToFullyBookedLink(String availability) throws Exception {
         Boolean isAvailable = availability.equals("some availability");
-        String token = tokenGenerator.getToken(isAvailable, ATF_ID, false);
+        tokenGenerator.generateToken(ATF_ID);
+        String token = dynamoDbApi.getToken(ATF_ID, isAvailable);
         confirmationPage.navigateToConfirmationPage(token);
     }
 
     @Given("I choose {string} link for {string}")
-    public void iChooseLinkFor(String availability, String atfName) {
+    public void iChooseLinkFor(String availability, String atfName) throws Exception {
         Boolean isAvailable = availability.equals("some availability");
         String atfId = dynamoDbApi.getAtfId(atfName);
-        String token = tokenGenerator.getToken(isAvailable, atfId, false);
+        tokenGenerator.generateToken(atfId);
+        String token = dynamoDbApi.getToken(atfId, isAvailable);
         confirmationPage.navigateToConfirmationPage(token);
     }
 
