@@ -19,12 +19,14 @@ import gov.hvtesting.utils.DateUtil;
 public class EmailResentPage extends BasePage {
 
     private static final String resendEmailHeader = "We have sent you an email";
+    private static final Integer reportingPeriodLength = 28;
     protected RemoteWebDriver driver;
     protected String resentEmailHeaderClassName = "govuk-panel__title";
     protected String feedbackLinkText = "What did you think of this service?";
     protected String availabilityStartDateId = "start-date";
     protected String availabilityEndDateId = "end-date";
     private DateUtil dateUtil;
+
 
     public EmailResentPage(RemoteWebDriver driver) {
         super(driver);
@@ -51,8 +53,8 @@ public class EmailResentPage extends BasePage {
         Date endDate = new SimpleDateFormat("d MMMM yyyy").parse(endDateText);
 
         //todo should it be today+4 weeks?
-        Date expectedStartDate = Date.from(dateUtil.getLastMonday().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date expectedEndDate = Date.from(dateUtil.getLastMonday().plusDays(27).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date expectedStartDate = Date.from(dateUtil.getNextMonday().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date expectedEndDate = Date.from(dateUtil.getNextMonday().plusDays(reportingPeriodLength).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         MatcherAssert.assertThat(startDate, DateMatchers.sameDay(expectedStartDate));
         MatcherAssert.assertThat(endDate, DateMatchers.sameDay(expectedEndDate));

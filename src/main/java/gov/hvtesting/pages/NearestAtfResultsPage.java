@@ -133,18 +133,18 @@ public class NearestAtfResultsPage extends BasePage {
             assertThat(actualAtfPostcode, is(equalTo(expectedAtfPostcode)));
             assertThat(actualAtfPhone, is(equalTo(expectedAtfPhone)));
             assertThat(actualAtfEmail, is(equalTo(expectedAtfEmail)));
-            checkAdditionalInformation(actualAtf, expectedTestedAtThisCentre, testedAtThisCentreXpath);
-            checkAdditionalInformation(actualAtf, expectedNotTestedAtThisCentre, notTestedAtThisCentreXpath);
-            checkAdditionalInformation(actualAtf, expectedSiteRestrictions, siteRestrictionsXpath);
+            checkAdditionalInformation(actualAtf, expectedTestedAtThisCentre, testedAtThisCentreXpath, expectedAtfName);
+            checkAdditionalInformation(actualAtf, expectedNotTestedAtThisCentre, notTestedAtThisCentreXpath,expectedAtfName);
+            checkAdditionalInformation(actualAtf, expectedSiteRestrictions, siteRestrictionsXpath, expectedAtfName);
         }
     }
 
-    private void checkAdditionalInformation(WebElement actualAtf, JSONArray expectedData, String xpath){
+    private void checkAdditionalInformation(WebElement actualAtf, JSONArray expectedData, String xpath, String atfName){
         List<String> expectedDataList = expectedData.toList().stream().map(String::valueOf).collect(Collectors.toList());
         if(expectedDataList.size()>0){
             List<String> actualData = Arrays.stream(actualAtf.findElement(By.xpath(xpath)).getText().split("\n"))
                 .map(String::valueOf).collect(Collectors.toList());
-            assertThat(actualData, Matchers.equalTo(expectedDataList));
+            assertThat("failing for atf: " + atfName , actualData, Matchers.equalTo(expectedDataList));
             if(expectedDataList.toString().contains("category")){
                 WebElement categoryLink = actualAtf.findElement(By.xpath(categoryLinkXpath));
                 assertThat(categoryLink.isDisplayed(), is(true));

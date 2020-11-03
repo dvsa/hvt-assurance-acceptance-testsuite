@@ -24,6 +24,7 @@ import io.restassured.response.Response;
 
 public class DynamoDbSteps {
 
+    private static final Integer reportingPeriodLength = 28;
     private String ATF_ID;
     private ConfirmationPage confirmationPage;
     private TestContext testContext;
@@ -40,9 +41,9 @@ public class DynamoDbSteps {
     public void atfAvailabilityIsSetToSomeAvailability(String availabilityType) throws ParseException {
         DynamoDbApi dynamoDbApi = new DynamoDbApi();
         Response response = dynamoDbApi.getAtfAvailabilityData(ATF_ID);
-        Date expectedStartDate = Date.from(dateUtil.getLastMonday().atStartOfDay(ZoneId.systemDefault()).plusHours(8).toInstant());
+        Date expectedStartDate = Date.from(dateUtil.getNextMonday().atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date expectedEndDate =
-            Date.from(dateUtil.getLastMonday().plusDays(27).atStartOfDay(ZoneId.systemDefault()).plusHours(17).toInstant());
+            Date.from(dateUtil.getNextMonday().plusDays(reportingPeriodLength).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         String expectedStartDateFormatted = dateFormat.format(expectedStartDate);
