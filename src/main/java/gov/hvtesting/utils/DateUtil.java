@@ -21,9 +21,9 @@ public class DateUtil {
         return foundDate;
     }
 
-    public LocalDate getLastMonday() {
-        LocalDate lastMonday = LocalDate.now().with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
-        return lastMonday;
+    public LocalDate getNextMonday() {
+        LocalDate nextMonday = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
+        return nextMonday;
     }
 
     public Date getUtcNow() throws ParseException {

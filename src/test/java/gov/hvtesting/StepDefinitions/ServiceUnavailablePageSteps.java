@@ -1,5 +1,6 @@
 package gov.hvtesting.StepDefinitions;
 
+import gov.hvtesting.framework.DynamoDbApi;
 import gov.hvtesting.framework.PropertyManager;
 import gov.hvtesting.framework.TestContext;
 import gov.hvtesting.framework.TokenGenerator;
@@ -13,36 +14,21 @@ public class ServiceUnavailablePageSteps {
     private final ServiceUnavailablePage serviceUnavailablePage;
     private final TestContext testContext;
     private final TokenGenerator tokenGenerator;
+    private final DynamoDbApi dynamoDbApi;
 
     public ServiceUnavailablePageSteps(TestContext context) {
         testContext = context;
         serviceUnavailablePage = testContext.getPageObjectManager().getServiceUnavailablePage();
         tokenGenerator = new TokenGenerator();
         ATF_ID = PropertyManager.getInstance(true).getAtfId();
+        dynamoDbApi = new DynamoDbApi();
     }
 
-    @Given("I choose to fully booked link with invalid token for a {string}")
-    public void iChooseToFullyBookedLinkWithInvalidTokenForAReason(String reason) {
-        String token = "";
-        switch (reason) {
-            case "incorrect_secret": {
-                token = tokenGenerator.getToken(false, ATF_ID, false, "invalidSecret");
-                break;
-            }
-            case "token_end_cut_out": {
-                String tempToken = tokenGenerator.getToken(false, ATF_ID, false);
-                token = tempToken.substring(0, tempToken.length() - 4);
-                break;
-            }
-            case "token_missing_payload": {
-                token = tokenGenerator.getTokenWithMissingPayload(false, ATF_ID, false);
-                break;
-            }
-            case "non_existing_atf": {
-                token = tokenGenerator.getToken(false, ATF_ID.replace("a", "b"), false);
-                break;
-            }
-        }
+    @Given("I choose to fully booked link with cut out token")
+    public void iChooseToFullyBookedLinkWithCutOutToken() throws Exception {
+        tokenGenerator.generateToken(ATF_ID);
+        String tempToken = dynamoDbApi.getToken(ATF_ID, false);
+        String token = tempToken.substring(0, tempToken.length() - 4);
         serviceUnavailablePage.navigateToServiceUnavailablePage(token);
     }
 
