@@ -140,7 +140,7 @@ public class NearestAtfResultsPage extends BasePage {
     }
 
     private void checkAdditionalInformation(WebElement actualAtf, JSONArray expectedData, String xpath, String atfName){
-        List<String> expectedDataList = expectedData.toList().stream().map(String::valueOf).collect(Collectors.toList());
+        List<String> expectedDataList = expectedData.toList().stream().map(x->(String.valueOf(x).trim())).collect(Collectors.toList());
         if(expectedDataList.size()>0){
             List<String> actualData = Arrays.stream(actualAtf.findElement(By.xpath(xpath)).getText().split("\n"))
                 .map(String::valueOf).collect(Collectors.toList());
