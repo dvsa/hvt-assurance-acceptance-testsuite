@@ -43,7 +43,7 @@ public class ConfirmationPage extends BasePage {
     }
 
     public void navigateToConfirmationPage(String token) {
-        String url = PropertyManager.getInstance(true).getUpdateAvailabilityUrl();
+        String url = PropertyManager.getInstance().getUpdateAvailabilityUrl();
         driver.get(url + token);
     }
 
@@ -84,7 +84,7 @@ public class ConfirmationPage extends BasePage {
         Date endDate = extractEndDate(datesText);
 
         Date expectedStartDate = Date.from(dateUtil.getNextMonday().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date expectedEndDate = Date.from(dateUtil.getNextMonday().plusDays(28).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date expectedEndDate = Date.from(dateUtil.getNextMonday().plusDays(27).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         MatcherAssert.assertThat(startDate, DateMatchers.sameDay(expectedStartDate));
         MatcherAssert.assertThat(endDate, DateMatchers.sameDay(expectedEndDate));

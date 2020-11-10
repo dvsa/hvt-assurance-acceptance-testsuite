@@ -24,10 +24,19 @@ In order to run all tests locally, run the following command:
 ```shell
 mvn test
 ```
+## In order to run all tests locally, run the following command:
+mvn test -Denvironment="local"
 
 To run selected test(s), described with @myTag:. Tag avaliable are shown in the Tags section
 ```shell
 mvn test -Dcucumber.filter.tags="@myTag"
+## To run selected test(s), described with @myTag:.
+mvn test -Denvironment="local" -Dcucumber.filter.tags="@myTag"
+
+## To run on selected environment: local or remote
+mvn test -Denvironment="local" -Dcucumber.filter.tags="@myTag"
+mvn test -Denvironment="remote" -Dcucumber.filter.tags="@myTag"
+
 ```
 
 ####Tags

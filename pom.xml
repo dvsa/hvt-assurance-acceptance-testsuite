@@ -19,6 +19,9 @@
             </plugin>
         </plugins>
     </build>
+    <properties>
+        <environment>${environment}</environment>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>

@@ -10,8 +10,6 @@ public class PropertyManager {
     private static final String LOCAL_PROPERTIES_FILE_PATH = "src/test/resources/test.properties";
     private static final String REMOTE_PROPERTIES_FILE_PATH = "src/test/resources/remote.properties";
     private static PropertyManager instance;
-    private static Boolean isLocal;
-    private static String url;
     private static String secret;
     private static String updateAvailabilityUrl;
     private static String jenkinsUrl;
@@ -23,8 +21,10 @@ public class PropertyManager {
     private static String tokenGeneratorHost;
     private static String tokenGeneratorPort;
 
-    public static PropertyManager getInstance(Boolean isLocal) {
-        String propertiesFilePath = isLocal ? LOCAL_PROPERTIES_FILE_PATH : REMOTE_PROPERTIES_FILE_PATH;
+    public static PropertyManager getInstance() {
+        String env = System.getProperty("environment");
+        String propertiesFilePath = env.equals("local") ? LOCAL_PROPERTIES_FILE_PATH : REMOTE_PROPERTIES_FILE_PATH;
+        System.out.println("ENVIRONMENT CHOSEN: " + propertiesFilePath);
         if (instance == null) {
             synchronized (lock) {
                 instance = new PropertyManager();
@@ -42,8 +42,6 @@ public class PropertyManager {
         } catch (IOException e) {
             System.out.println("Configuration properties file cannot be found in the given path: " + path);
         }
-        isLocal = Boolean.getBoolean(prop.getProperty("test.isLocal"));
-        url = prop.getProperty("test.baseUrl");
         secret = prop.getProperty("test.secret");
         updateAvailabilityUrl = prop.getProperty("test.updateAvailabilityUrl");
         jenkinsUrl = prop.getProperty("test.jenkinsUrl");
@@ -56,13 +54,6 @@ public class PropertyManager {
         tokenGeneratorPort = prop.getProperty("test.tokenGeneratorPort");
     }
 
-    public String getURL() {
-        return url;
-    }
-
-    public Boolean isLocal() {
-        return isLocal;
-    }
 
     public String getSecret() {
         return secret;

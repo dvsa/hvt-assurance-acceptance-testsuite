@@ -23,7 +23,7 @@ public class ConfirmationPageSteps {
         testContext = context;
         confirmationPage = testContext.getPageObjectManager().getConfirmationPage();
         tokenGenerator = new TokenGenerator();
-        ATF_ID = PropertyManager.getInstance(true).getAtfId();
+        ATF_ID = PropertyManager.getInstance().getAtfId();
         dynamoDbApi = new DynamoDbApi();
     }
 

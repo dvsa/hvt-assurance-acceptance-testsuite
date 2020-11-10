@@ -17,12 +17,12 @@ public class DynamoDbApi {
     private static final String ATF_DATA_TABLE = "AuthorisedTestingFacilities";
 
 
-    public DynamoDbApi() {
-        READ_API_HOST = PropertyManager.getInstance(true).getReadApiHost();
-        READ_API_PORT = Integer.decode(PropertyManager.getInstance(true).getReadApiPort());
+    public DynamoDbApi(){
+        READ_API_HOST = PropertyManager.getInstance().getReadApiHost();
+        READ_API_PORT = Integer.decode(PropertyManager.getInstance().getReadApiPort());
     }
 
-    public Response getAtfAvailabilityData(String atfId) {
+    public Response getAtfAvailabilityData(String atfId)  {
         Response response = given().baseUri(READ_API_HOST)
                 .port(READ_API_PORT)
                 .basePath(ATF_DATA_TABLE + "/" + atfId)
