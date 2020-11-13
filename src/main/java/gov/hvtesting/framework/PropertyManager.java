@@ -20,10 +20,11 @@ public class PropertyManager {
     private static String atfId;
     private static String tokenGeneratorHost;
     private static String tokenGeneratorPort;
+    private static String environment;
 
     public static PropertyManager getInstance() {
-        String env = System.getProperty("environment");
-        String propertiesFilePath = env.equals("local") ? LOCAL_PROPERTIES_FILE_PATH : REMOTE_PROPERTIES_FILE_PATH;
+        environment = System.getProperty("environment");
+        String propertiesFilePath = environment.equals("local") ? LOCAL_PROPERTIES_FILE_PATH : REMOTE_PROPERTIES_FILE_PATH;
         System.out.println("ENVIRONMENT CHOSEN: " + propertiesFilePath);
         if (instance == null) {
             synchronized (lock) {
@@ -53,7 +54,6 @@ public class PropertyManager {
         tokenGeneratorHost = prop.getProperty("test.tokenGeneratorHost");
         tokenGeneratorPort = prop.getProperty("test.tokenGeneratorPort");
     }
-
 
     public String getSecret() {
         return secret;
@@ -97,5 +97,9 @@ public class PropertyManager {
 
     public String getTokenGeneratorPort() {
         return tokenGeneratorPort;
+    }
+
+    public String getEnvironment() {
+        return environment;
     }
 }
