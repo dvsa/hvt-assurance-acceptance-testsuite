@@ -3,12 +3,14 @@ package gov.hvtesting.framework;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Properties;
 
 public class PropertyManager {
     private static final Object lock = new Object();
     private static final String LOCAL_PROPERTIES_FILE_PATH = "src/test/resources/test.properties";
     private static final String REMOTE_PROPERTIES_FILE_PATH = "src/test/resources/remote.properties";
+    private static final String DEFAULT_ENVIRONMENT = "local";
     private static PropertyManager instance;
     private static String secret;
     private static String updateAvailabilityUrl;
@@ -23,9 +25,9 @@ public class PropertyManager {
     private static String environment;
 
     public static PropertyManager getInstance() {
-        environment = System.getProperty("environment");
-        String propertiesFilePath = environment.equals("local") ? LOCAL_PROPERTIES_FILE_PATH : REMOTE_PROPERTIES_FILE_PATH;
-        System.out.println("ENVIRONMENT CHOSEN: " + propertiesFilePath);
+        environment = Optional.ofNullable(System.getProperty("environment"))
+            .orElse(DEFAULT_ENVIRONMENT);
+        String propertiesFilePath = environment.equals("remote") ?  REMOTE_PROPERTIES_FILE_PATH : LOCAL_PROPERTIES_FILE_PATH;
         if (instance == null) {
             synchronized (lock) {
                 instance = new PropertyManager();
