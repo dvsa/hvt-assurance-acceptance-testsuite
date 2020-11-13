@@ -20,7 +20,7 @@
         </plugins>
     </build>
     <properties>
-        <environment>${environment}</environment>
+        <environment>local</environment>
     </properties>
     <dependencies>
         <dependency>

@@ -20,11 +20,29 @@ You will need to include a test.properties file in the framework, see the exampl
 ##Running tests
 
 In order to run all tests locally, run the following command:
+#Running tests
+Tests running configuration can be found in `TestRunner.java` class. 
+By default, local environment is used which is defined in `pom.xml` file as: 
+```
+<properties>
+    <environment>local</environment>
+</properties>
+```
+#### In order to run all tests locally, run the following command:
 
 ```shell
 mvn test
 ```
 ## In order to run all tests locally, run the following command:
+mvn test
+```
+#### To run selected test(s), described with @myTag:.
+```
+mvn test -Dcucumber.filter.tags="@myTag"
+```
+
+#### To run on selected environment: local or remote
+```
 mvn test -Denvironment="local"
 
 To run selected test(s), described with @myTag:. Tag avaliable are shown in the Tags section
@@ -37,6 +55,7 @@ mvn test -Denvironment="local" -Dcucumber.filter.tags="@myTag"
 mvn test -Denvironment="local" -Dcucumber.filter.tags="@myTag"
 mvn test -Denvironment="remote" -Dcucumber.filter.tags="@myTag"
 
+mvn test -Denvironment="remote"
 ```
 
 ####Tags
