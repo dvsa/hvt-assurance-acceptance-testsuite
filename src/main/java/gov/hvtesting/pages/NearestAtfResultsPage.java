@@ -1,19 +1,7 @@
 package gov.hvtesting.pages;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.hamcrest.core.Is.is;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import gov.hvtesting.framework.DynamoDbApi;
+import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,8 +9,17 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import gov.hvtesting.framework.DynamoDbApi;
-import io.restassured.response.Response;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.core.Is.is;
 
 public class NearestAtfResultsPage extends BasePage {
 
@@ -37,8 +34,10 @@ public class NearestAtfResultsPage extends BasePage {
     private String categoryLinkXpath = ".//a[contains(text(),'category')]";
     private String availabilityStatusXpath = ".//strong";
     private String backButtonId = "back-link";
+    private String filterButtonId = "filter-results-button";
     private String pageLinkClass = "pagination__link";
     private String nextPageButtonXpath = "//a[@aria-label='Next page']";
+    private String showOnlyAvailableCentres = "remove-no-availability-filter-radio-button";
     private String mileageFieldCss = "span.govuk-hint";
     private DynamoDbApi dynamoDbApi;
     private JSONArray expectedAtfsWithNoInfo;
@@ -59,6 +58,29 @@ public class NearestAtfResultsPage extends BasePage {
 
     public void clickBackButton() {
         clickElement(By.id(backButtonId));
+    }
+
+    public void selectShowOnlyAvailableCentresRadioButtonOption() {
+        WebElement optionButton = driver.findElement(By.id(showOnlyAvailableCentres));
+        optionButton.click();
+    }
+
+    public void pageDoesNotContains(String availability) {
+        List<WebElement> page = getElements(By.className(pageLinkClass));
+        page.remove(page.size() - 1);
+
+
+        for (int i = 1; i < page.size(); i++) {
+            List<WebElement> resultsElements = getElements(By.xpath(resultListElementXpath));
+            assertThat(resultsElements, is(not(empty())));
+            assertThat(resultsElements.size(), is(lessThanOrEqualTo(maximumNumberOfResultsPerPage)));
+            checkListOrdered(resultsElements);
+
+            assertThat(resultsElements.contains(availability),is(false));
+            clickElement(By.xpath(nextPageButtonXpath));
+
+
+        }
     }
 
     public void clickNextButton() {
@@ -101,8 +123,8 @@ public class NearestAtfResultsPage extends BasePage {
 
     private List<WebElement> getElementsWithText(List<WebElement> elements, String text) {
         return elements.stream()
-            .filter(element -> element.getText().contains(text))
-            .collect(Collectors.toList());
+                .filter(element -> element.getText().contains(text))
+                .collect(Collectors.toList());
     }
 
     private void checkAtfData(List<WebElement> actualAtfs, JSONArray expectedAtfs) {
@@ -118,7 +140,7 @@ public class NearestAtfResultsPage extends BasePage {
             JSONObject expectedAtf = findJsonAtf(actualAtfName, expectedAtfs);
             String expectedAtfName = expectedAtf.getString("name");
             String expectedAtfAddress = expectedAtf.getJSONObject("address").getString("line1") + " " + expectedAtf.getJSONObject(
-                "address").getString("line2");
+                    "address").getString("line2");
             String expectedAtfTown = expectedAtf.getJSONObject("address").getString("town");
             String expectedAtfPostcode = expectedAtf.getJSONObject("address").getString("postcode");
             String expectedAtfPhone = expectedAtf.getString("phone");
@@ -143,7 +165,7 @@ public class NearestAtfResultsPage extends BasePage {
         List<String> expectedDataList = expectedData.toList().stream().map(x->(String.valueOf(x).trim())).collect(Collectors.toList());
         if(expectedDataList.size()>0){
             List<String> actualData = Arrays.stream(actualAtf.findElement(By.xpath(xpath)).getText().split("\n"))
-                .map(String::valueOf).collect(Collectors.toList());
+                    .map(String::valueOf).collect(Collectors.toList());
             assertThat("failing for atf: " + atfName , actualData, Matchers.equalTo(expectedDataList));
             if(expectedDataList.toString().contains("category")){
                 WebElement categoryLink = actualAtf.findElement(By.xpath(categoryLinkXpath));

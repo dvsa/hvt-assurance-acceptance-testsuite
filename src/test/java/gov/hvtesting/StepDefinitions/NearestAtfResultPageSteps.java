@@ -44,4 +44,14 @@ public class NearestAtfResultPageSteps {
     public void iCanSeeToHave(String atfName, String availability) {
         nearestAtfResultsPage.checkAtfStatus(atfName, availability);
     }
+
+    @And("I click on the option to only see centres with tests available")
+    public void iClickCheckBox() {
+        nearestAtfResultsPage.selectShowOnlyAvailableCentresRadioButtonOption();
+    }
+
+    @And("The page does not contain {string}")
+    public void pageDoesNotContainNoAvailabilityAtfSites(String availability) {
+        nearestAtfResultsPage.pageDoesNotContains(availability);
+    }
 }

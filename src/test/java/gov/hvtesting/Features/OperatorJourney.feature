@@ -1,3 +1,4 @@
+@OperatorJourney
 Feature: Operator Journey
 
   @UI @TC12
@@ -21,3 +22,11 @@ Feature: Operator Journey
     Given I go to Nearest ATF Search page
     When I fill in my postcode with "pll777"
     Then I can see error message
+
+  @UI
+  Scenario: User decides to remove test centres with no availability from the results
+    Given I go to Nearest ATF Search page
+    When I fill in my postcode with "SW1A2AA"
+    Then I am on Nearest ATF Results page for "SW1A 2AA"
+    Then I click on the option to only see centres with tests available
+    And The page does not contain "FULLY BOOKED"
