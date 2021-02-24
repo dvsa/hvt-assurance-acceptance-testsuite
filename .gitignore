@@ -4,3 +4,4 @@ target/
 src/test/resources/remote.properties
 src/test/resources/test.properties
 src/test/resources/driver/chromedriver
+acceptance-tests.iml
