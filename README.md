@@ -4,28 +4,14 @@ HV Testing - acceptance testing framework
 
 #Running tests
 Tests running configuration can be found in `TestRunner.java` class. 
-By default, local environment is used which is defined in `pom.xml` file as: 
-```
-<properties>
-    <environment>local</environment>
-</properties>
-```
-#### In order to run all tests locally, run the following command:
 
 ```shell
+## In order to run all tests locally, run the following command:
 mvn test
-```
-#### To run selected test(s), described with @myTag:.
-```
+
+## To run selected test(s), described with @myTag:.
 mvn test -Dcucumber.filter.tags="@myTag"
 ```
-
-#### To run on selected environment: local or remote
-```
-mvn test -Denvironment="local"
-mvn test -Denvironment="remote"
-```
-
 After every run new cucumber Test Report is generated and can be found in `target/cucumber-reports.html`
 
 #GOV.UK Notify setup

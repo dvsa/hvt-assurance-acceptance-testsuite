@@ -18,8 +18,8 @@ public class DynamoDbApi {
 
 
     public DynamoDbApi(){
-        READ_API_HOST = PropertyManager.getInstance().getReadApiHost();
-        READ_API_PORT = Integer.decode(PropertyManager.getInstance().getReadApiPort());
+        READ_API_HOST = PropertyManager.getInstance(true).getReadApiHost();
+        READ_API_PORT = Integer.decode(PropertyManager.getInstance(true).getReadApiPort());
     }
 
     public Response getAtfAvailabilityData(String atfId)  {
