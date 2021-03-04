@@ -24,7 +24,7 @@ import io.restassured.response.Response;
 
 public class DynamoDbSteps {
 
-    private static final Integer reportingPeriodLength = 27;
+    private static final Integer reportingPeriodLength = 28;
     private String ATF_ID;
     private ConfirmationPage confirmationPage;
     private TestContext testContext;
@@ -34,7 +34,7 @@ public class DynamoDbSteps {
         testContext = context;
         confirmationPage = testContext.getPageObjectManager().getConfirmationPage();
         dateUtil = new DateUtil();
-        ATF_ID = PropertyManager.getInstance().getAtfId();
+        ATF_ID = PropertyManager.getInstance(true).getAtfId();
     }
 
     @Then("^ATF availability is set to (some availability|fully booked)$")
@@ -43,7 +43,7 @@ public class DynamoDbSteps {
         Response response = dynamoDbApi.getAtfAvailabilityData(ATF_ID);
         Date expectedStartDate = Date.from(dateUtil.getNextMonday().atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date expectedEndDate =
-            Date.from(dateUtil.getNextMonday().plusDays(reportingPeriodLength+1).atStartOfDay(ZoneId.systemDefault()).minusSeconds(1).toInstant());
+            Date.from(dateUtil.getNextMonday().plusDays(reportingPeriodLength).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         String expectedStartDateFormatted = dateFormat.format(expectedStartDate);
@@ -57,7 +57,7 @@ public class DynamoDbSteps {
         String lastUpdatedOn = response.jsonPath().get("availability.lastUpdated");
         Date lastUpdatedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(lastUpdatedOn);
         Date expectedLastUpdatedOn = dateUtil.getUtcNow();
-        assertThat(lastUpdatedDate, DateMatchers.within(30, ChronoUnit.SECONDS, expectedLastUpdatedOn));
+        assertThat(lastUpdatedDate, DateMatchers.within(20, ChronoUnit.SECONDS, expectedLastUpdatedOn));
     }
 
 

@@ -3,15 +3,15 @@ package gov.hvtesting.framework;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.Properties;
 
 public class PropertyManager {
     private static final Object lock = new Object();
     private static final String LOCAL_PROPERTIES_FILE_PATH = "src/test/resources/test.properties";
     private static final String REMOTE_PROPERTIES_FILE_PATH = "src/test/resources/remote.properties";
-    private static final String DEFAULT_ENVIRONMENT = "local";
     private static PropertyManager instance;
+    private static Boolean isLocal;
+    private static String url;
     private static String secret;
     private static String updateAvailabilityUrl;
     private static String jenkinsUrl;
@@ -22,12 +22,9 @@ public class PropertyManager {
     private static String atfId;
     private static String tokenGeneratorHost;
     private static String tokenGeneratorPort;
-    private static String environment;
 
-    public static PropertyManager getInstance() {
-        environment = Optional.ofNullable(System.getProperty("environment"))
-            .orElse(DEFAULT_ENVIRONMENT);
-        String propertiesFilePath = environment.equals("remote") ?  REMOTE_PROPERTIES_FILE_PATH : LOCAL_PROPERTIES_FILE_PATH;
+    public static PropertyManager getInstance(Boolean isLocal) {
+        String propertiesFilePath = isLocal ? LOCAL_PROPERTIES_FILE_PATH : REMOTE_PROPERTIES_FILE_PATH;
         if (instance == null) {
             synchronized (lock) {
                 instance = new PropertyManager();
@@ -45,6 +42,8 @@ public class PropertyManager {
         } catch (IOException e) {
             System.out.println("Configuration properties file cannot be found in the given path: " + path);
         }
+        isLocal = Boolean.getBoolean(prop.getProperty("test.isLocal"));
+        url = prop.getProperty("test.baseUrl");
         secret = prop.getProperty("test.secret");
         updateAvailabilityUrl = prop.getProperty("test.updateAvailabilityUrl");
         jenkinsUrl = prop.getProperty("test.jenkinsUrl");
@@ -55,6 +54,14 @@ public class PropertyManager {
         atfId = prop.getProperty("test.atfId");
         tokenGeneratorHost = prop.getProperty("test.tokenGeneratorHost");
         tokenGeneratorPort = prop.getProperty("test.tokenGeneratorPort");
+    }
+
+    public String getURL() {
+        return url;
+    }
+
+    public Boolean isLocal() {
+        return isLocal;
     }
 
     public String getSecret() {
@@ -99,9 +106,5 @@ public class PropertyManager {
 
     public String getTokenGeneratorPort() {
         return tokenGeneratorPort;
-    }
-
-    public String getEnvironment() {
-        return environment;
     }
 }
