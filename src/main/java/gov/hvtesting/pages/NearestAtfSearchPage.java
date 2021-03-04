@@ -10,7 +10,7 @@ import gov.hvtesting.framework.PropertyManager;
 
 public class NearestAtfSearchPage extends BasePage {
 
-    private static final String errorMessageText = "Enter a postcode in the correct format";
+    private static final String errorMessageText = "Enter a real postcode";
     private static final String headerText = "Find a test centre for an HGV, bus or trailer MOT";
     private String postcodeFieldId = "postcode";
     private String findButtonId = "//button[@type='submit']";
@@ -24,7 +24,7 @@ public class NearestAtfSearchPage extends BasePage {
     }
 
     public void navigateToSearchPage() {
-        String url = PropertyManager.getInstance(true).getSearchNearestAtfUrl();
+        String url = PropertyManager.getInstance().getSearchNearestAtfUrl();
         driver.get(url);
     }
 
