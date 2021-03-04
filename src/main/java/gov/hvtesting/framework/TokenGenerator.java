@@ -10,8 +10,8 @@ public class TokenGenerator {
     private int TOKEN_GENERATOR_PORT;
 
     public TokenGenerator() {
-        TOKEN_GENERATOR_HOST = PropertyManager.getInstance(true).getTokenGeneratorHost();
-        TOKEN_GENERATOR_PORT = Integer.decode(PropertyManager.getInstance(true).getTokenGeneratorPort());
+        TOKEN_GENERATOR_HOST = PropertyManager.getInstance().getTokenGeneratorHost();
+        TOKEN_GENERATOR_PORT = Integer.decode(PropertyManager.getInstance().getTokenGeneratorPort());
     }
 
     public void generateToken(String atfId) {
