@@ -21,7 +21,7 @@ public class ServiceUnavailablePage extends BasePage {
     }
 
     public void navigateToServiceUnavailablePage(String token) {
-        String url = PropertyManager.getInstance().getUpdateAvailabilityUrl();
+        String url = PropertyManager.getInstance(true).getUpdateAvailabilityUrl();
         driver.get(url + token);
     }
 

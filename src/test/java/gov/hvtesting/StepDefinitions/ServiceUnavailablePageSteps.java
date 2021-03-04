@@ -20,7 +20,7 @@ public class ServiceUnavailablePageSteps {
         testContext = context;
         serviceUnavailablePage = testContext.getPageObjectManager().getServiceUnavailablePage();
         tokenGenerator = new TokenGenerator();
-        ATF_ID = PropertyManager.getInstance().getAtfId();
+        ATF_ID = PropertyManager.getInstance(true).getAtfId();
         dynamoDbApi = new DynamoDbApi();
     }
 

@@ -30,8 +30,8 @@ public final class EmailsApi {
         String requestBody = objectMapper
             .writeValueAsString(values);
 
-        String jenkinsUrl = PropertyManager.getInstance().getJenkinsUrl();
-        String jobName = PropertyManager.getInstance().getSendReminderEmailJobName();
+        String jenkinsUrl = PropertyManager.getInstance(true).getJenkinsUrl();
+        String jobName = PropertyManager.getInstance(true).getSendReminderEmailJobName();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(jenkinsUrl + "/job/" + jobName + "/buildWithParameters"))

@@ -20,10 +20,15 @@ public class Hooks {
         dynamoDbApi = new DynamoDbApi();
     }
 
+    @Before("@UI")
+    public void BeforeSteps() {
+        // testContext.getWebDriverManager().createDriver();
+    }
+
     @Before("@TestData")
     public void PrepareTestData() {
         String atfId = dynamoDbApi.getAtfId();
-        PropertyManager.getInstance().setAtfId(atfId);
+        PropertyManager.getInstance(true).setAtfId(atfId);
     }
 
     @After("@UI")
