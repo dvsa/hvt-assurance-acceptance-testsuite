@@ -37,11 +37,28 @@ public class ConfirmationPageSteps {
 
     @Given("I choose {string} link for {string}")
     public void iChooseLinkFor(String availability, String atfName) throws Exception {
-        Boolean isAvailable = availability.equals("some availability");
-        String atfId = dynamoDbApi.getAtfId(atfName);
-        tokenGenerator.generateToken(atfId);
-        String token = dynamoDbApi.getToken(atfId, isAvailable);
-        confirmationPage.navigateToConfirmationPage(token);
+
+        if (availability.equals("some availability")) {
+            String atfId = dynamoDbApi.getAtfId(atfName);
+            tokenGenerator.generateToken(atfId);
+            String token = dynamoDbApi.getToken(atfId, true);
+            confirmationPage.navigateToConfirmationPage(token);
+            confirmationPage.selectYesOption();
+            confirmationPage.submitMyAvailabilityButton();
+        } else if (availability.equals("fully booked")){
+            String atfId = dynamoDbApi.getAtfId(atfName);
+            tokenGenerator.generateToken(atfId);
+            String token = dynamoDbApi.getToken(atfId, false);
+            confirmationPage.navigateToConfirmationPage(token);
+            confirmationPage.selectNoOption();
+            confirmationPage.submitMyAvailabilityButton();
+        }
+        else {
+            String atfId = dynamoDbApi.getAtfId(atfName);
+            tokenGenerator.generateToken(atfId);
+            String token = dynamoDbApi.getToken(atfId, false);
+            confirmationPage.navigateToConfirmationPage(token);
+        }
     }
 
     @Then("^I am on (Some Availability|Fully Booked)? confirmation page$")
