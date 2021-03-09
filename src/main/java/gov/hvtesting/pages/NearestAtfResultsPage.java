@@ -29,7 +29,7 @@ public class NearestAtfResultsPage extends BasePage {
     private static final String headerText = "Test centres near ";
     private static final Integer maximumNumberOfResultsPerPage = 5;
     protected RemoteWebDriver driver;
-    private String headerId = "govuk-heading-xl";
+    private String headerIdXpath = "//*[@id=\"main-content\"]/h1";
     private String resultListElementXpath = "//ul[@class='govuk-list']";
     private String testedAtThisCentreXpath = ".//p[text()='Tested at this centre']/following-sibling::*[1][name()='ul']";
     private String notTestedAtThisCentreXpath = ".//p[text()='Not tested at this centre']/following-sibling::*[1][name()='ul']";
@@ -52,7 +52,7 @@ public class NearestAtfResultsPage extends BasePage {
     }
 
     public NearestAtfResultsPage checkHeader(String postcode) {
-        String actualHeaderText = getElementText(By.className(headerId));
+        String actualHeaderText = getElementText(By.xpath(headerIdXpath));
         assertThat(actualHeaderText, containsString(headerText + "'" + postcode + "'"));
         return this;
     }
@@ -186,8 +186,7 @@ public class NearestAtfResultsPage extends BasePage {
     public void checkAtfStatus(String atfName, String availability) {
         List<WebElement> resultsElements = getElements(By.xpath(resultListElementXpath));
         WebElement atfElement = getElementsWithText(resultsElements, atfName).get(0);
-        String atfAvailablityStatus = atfElement.findElement(By.xpath(availabilityStatusXpath)).getText();
-
-        assertThat(atfAvailablityStatus, is(equalTo(availability)));
+        String aftAvailabilityStatus = atfElement.findElement(By.xpath(availabilityStatusXpath)).getText();
+        assertThat(aftAvailabilityStatus, is(equalTo(availability)));
     }
 }

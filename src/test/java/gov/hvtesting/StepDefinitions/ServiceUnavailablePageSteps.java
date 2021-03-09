@@ -24,7 +24,7 @@ public class ServiceUnavailablePageSteps {
         dynamoDbApi = new DynamoDbApi();
     }
 
-    @Given("I choose to fully booked link with cut out token")
+    @Given("I click the link to update the availability without out token")
     public void iChooseToFullyBookedLinkWithCutOutToken() throws Exception {
         tokenGenerator.generateToken(ATF_ID);
         String tempToken = dynamoDbApi.getToken(ATF_ID, false);

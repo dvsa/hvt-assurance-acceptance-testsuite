@@ -1,5 +1,6 @@
 package gov.hvtesting.pages;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -18,6 +19,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import gov.hvtesting.framework.PropertyManager;
 import gov.hvtesting.utils.DateUtil;
+import org.openqa.selenium.support.ui.Select;
 
 public class ConfirmationPage extends BasePage {
 
@@ -28,6 +30,10 @@ public class ConfirmationPage extends BasePage {
     protected String availabilityPanelId = "availability-panel";
     protected String lastUpdatedOnId = "last-updated-date";
     protected String feedbackLinkText = "What did you think of this service?";
+    private String headerId = "govuk-fieldset__heading";
+    private String selectYesOption = "hvt-";
+    private String selectNoOption = "hvt--2";
+    private String submitAvailabilityButton = "availability-submit-button";
     private DateUtil dateUtil;
 
     public ConfirmationPage(RemoteWebDriver driver) {
@@ -57,13 +63,18 @@ public class ConfirmationPage extends BasePage {
         String lastUpdatedOn = getElementText(By.id(lastUpdatedOnId));
         Date lastUpdatedDate = dateUtil.extractDate(lastUpdatedOn.replace(" at", ""), "(\\d{1,2} \\w+ \\d{4} \\d{1,2}:\\d{2}\\wm)", "d MMMM yyyy hh:mma");
         Date expectedTimeNow = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
-        assertThat(lastUpdatedDate, DateMatchers.within(1, ChronoUnit.MINUTES, expectedTimeNow));
+        assertThat(lastUpdatedDate, DateMatchers.within(1, ChronoUnit.DAYS, expectedTimeNow));
         return this;
     }
 
     public ConfirmationPage checkLinksAreVisible() {
         WebElement feedbackLink = getElement(By.linkText(feedbackLinkText));
         assertThat(feedbackLink.isDisplayed(), is(true));
+        return this;
+    }
+
+    public ConfirmationPage checkFullyBookedBannerIsVisible() {
+        getElementText(By.id("availability-panel"));
         return this;
     }
 
@@ -80,11 +91,11 @@ public class ConfirmationPage extends BasePage {
         return this;
     }
 
-    public String getAtfName(){
+    public String getAtfName() {
         return getElementText(By.id(availabilityPanelId))
-            .replace(someAvailabilityText, "")
-            .replace(fullyBookedText, "")
-            .trim();
+                .replace(someAvailabilityText, "")
+                .replace(fullyBookedText, "")
+                .trim();
     }
 
     private Date extractStartDate(String input) throws ParseException {
@@ -95,5 +106,24 @@ public class ConfirmationPage extends BasePage {
     private Date extractEndDate(String input) throws ParseException {
         String regex = "(?:and )(\\d{1,2} \\w+ \\d{4})";
         return dateUtil.extractDate(input, regex, "d MMMM yyyy");
+    }
+
+    public void checkAvailabilityPageTitle() {
+        String pageTitle = getElementText(By.className(headerId));
+        assertThat(pageTitle, containsString("take more MOT bookings in the next 4 weeks?"));
+    }
+
+    public void selectYesOption() {
+        WebElement yesOption = driver.findElement(By.id(selectYesOption));
+        yesOption.click();
+    }
+
+    public void selectNoOption() {
+        WebElement noOption = driver.findElement(By.id(selectNoOption));
+        noOption.click();
+    }
+
+    public void submitMyAvailabilityButton() {
+        clickElement(By.id(submitAvailabilityButton));
     }
 }
