@@ -3,6 +3,7 @@ package gov.hvtesting.framework;
 import static io.restassured.RestAssured.given;
 
 import io.restassured.response.Response;
+import org.json.JSONObject;
 
 public class TokenGenerator {
 
@@ -15,9 +16,13 @@ public class TokenGenerator {
     }
 
     public void generateToken(String atfId) {
+        JSONObject json = new JSONObject();
+        json.put("atfId", atfId);
         Response response = given().baseUri(TOKEN_GENERATOR_HOST)
+
             .port(TOKEN_GENERATOR_PORT)
             .queryParam("atfId", atfId)
+                .body(json.toString())
             .when()
             .post();
         response.then().statusCode(200);

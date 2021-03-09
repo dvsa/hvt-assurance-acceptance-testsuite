@@ -20,6 +20,7 @@ public class NearestAtfResultPageSteps {
     public void iCanSeeNearestATFsOrdered(int number) {
         //todo number will be applied with pagination
         //todo order to be checked
+        //@todo re-look at this as this may fail when the DB has availability already set manually
         nearestAtfResultsPage.checkResultsList();
 
     }

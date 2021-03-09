@@ -17,44 +17,44 @@ public class DynamoDbApi {
     private static final String ATF_DATA_TABLE = "AuthorisedTestingFacilities";
 
 
-    public DynamoDbApi(){
+    public DynamoDbApi() {
         READ_API_HOST = PropertyManager.getInstance(true).getReadApiHost();
         READ_API_PORT = Integer.decode(PropertyManager.getInstance(true).getReadApiPort());
     }
 
-    public Response getAtfAvailabilityData(String atfId)  {
+    public Response getAtfAvailabilityData(String atfId) {
         Response response = given().baseUri(READ_API_HOST)
-            .port(READ_API_PORT)
-            .basePath(ATF_DATA_TABLE +"/" + atfId)
-            .queryParam("keyName", "id")
-            .when()
-            .get();
+                .port(READ_API_PORT)
+                .basePath(ATF_DATA_TABLE + "/" + atfId)
+                .queryParam("keyName", "id")
+                .when()
+                .get();
         response.then().statusCode(200);
         return response;
     }
 
-    public Response getNearestAtfs()  {
+    public Response getNearestAtfs() {
         Response response = given().baseUri(READ_API_HOST)
-            .port(READ_API_PORT)
-            .basePath(ATF_DATA_TABLE)
-            .when()
-            .get();
+                .port(READ_API_PORT)
+                .basePath(ATF_DATA_TABLE)
+                .when()
+                .get();
         response.then().statusCode(200);
         return response;
     }
 
-    public String getAtfId()  {
+    public String getAtfId() {
         Response response = getNearestAtfs();
         String id = response.getBody().jsonPath().getString("Items.id[0]");
         return id;
     }
 
-    public String getAtfId(String atfName)  {
+    public String getAtfId(String atfName) {
         Response response = getNearestAtfs();
         HashMap<String, String> nameIdMap = new HashMap<String, String>();
-        List<HashMap<String,String>> items = response.getBody().jsonPath().getList("Items");
-         items.stream().forEach(x->nameIdMap.put(x.get("name"), x.get("id")));
-         String id = nameIdMap.get(atfName);
+        List<HashMap<String, String>> items = response.getBody().jsonPath().getList("Items");
+        items.stream().forEach(x -> nameIdMap.put(x.get("name"), x.get("id")));
+        String id = nameIdMap.get(atfName);
         return id;
     }
 
@@ -62,17 +62,14 @@ public class DynamoDbApi {
         Response response = getNearestAtfs();
         JSONArray atfs = new JSONObject(response.asString()).getJSONArray("Items");
         JSONObject json;
-        int i =0;
+        int i = 0;
         do {
-            if (i >= atfs.length()){
+            if (i >= atfs.length()) {
                 throw new Exception("ATF Id" + atfId + "was not found in DynamoDB table");
             }
             json = atfs.getJSONObject(i);
             i++;
         } while (!json.getString("id").equals(atfId));
-
-        String tokenType = isAvailable ? "yes" : "no";
-        String token = json.getJSONObject("tokens").getString(tokenType);
-        return token;
+        return json.getString("token");
     }
 }
