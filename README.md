@@ -33,6 +33,7 @@ mvn test -Dcucumber.filter.tags="@myTag"
 ####Tags
 ```shell
 @UI
+@Cookies
 @TestData
 ```
 
