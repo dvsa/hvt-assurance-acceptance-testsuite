@@ -1,12 +1,7 @@
 package gov.hvtesting.framework;
 
+import gov.hvtesting.pages.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import gov.hvtesting.pages.ConfirmationPage;
-import gov.hvtesting.pages.EmailResentPage;
-import gov.hvtesting.pages.NearestAtfResultsPage;
-import gov.hvtesting.pages.NearestAtfSearchPage;
-import gov.hvtesting.pages.ServiceUnavailablePage;
 
 public class PageObjectManager {
 
@@ -16,6 +11,7 @@ public class PageObjectManager {
     private ServiceUnavailablePage serviceUnavailablePage;
     private NearestAtfResultsPage nearestAtfResultsPage;
     private NearestAtfSearchPage nearestAtfSearchPage;
+    private ApplicationCookies applicationCookies;
 
     public PageObjectManager(RemoteWebDriver driver) {
         this.driver = driver;
@@ -39,5 +35,9 @@ public class PageObjectManager {
 
     public NearestAtfResultsPage getNearestAtfResultsPage(){
         return (nearestAtfResultsPage == null) ? nearestAtfResultsPage = new NearestAtfResultsPage(driver) : nearestAtfResultsPage;
+    }
+
+    public ApplicationCookies getCheckApplicationCookies(){
+        return (applicationCookies == null) ? applicationCookies = new ApplicationCookies(driver) : applicationCookies;
     }
 }
