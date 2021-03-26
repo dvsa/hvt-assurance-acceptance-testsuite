@@ -14,21 +14,25 @@ public class ApplicationCookies extends BasePage {
     protected RemoteWebDriver driver;
     private String cookieHeaderId = "cm_cookie_notification";
     private String pageTitleClass = "govuk-heading-xl";
-    protected String cookiesLinkXpath = "/html/body/footer/div/div/div[1]/ul/li[3]/a";
+    private String cookiesLinkXpath = "/html/body/footer/div/div/div[1]/ul/li[3]/a";
 
     public ApplicationCookies(RemoteWebDriver driver) {
         super(driver);
         this.driver = driver;
     }
 
-    public void cookieBanner() {
-        getElementText(By.id(cookieHeaderId));
-    }
-
     public void checkCookieLinksIsVisible() {
         WebElement cookiesLink = driver.findElement(By.xpath(cookiesLinkXpath));
-        cookiesLink.click();
+
+        boolean cookieFooterLink =  cookiesLink.isDisplayed();
+        assertThat(cookieFooterLink, is(true));
     }
+
+    public void cookieBanner() {
+        boolean cookieBanner = driver.findElement(By.id(cookieHeaderId)).isDisplayed();
+        assertThat(cookieBanner, is(true));
+    }
+
 
     public void cookieBannerText() {
         String actualContentTitle = getElementText(By.id(cookieHeaderId));
@@ -42,8 +46,13 @@ public class ApplicationCookies extends BasePage {
     }
 
     public void acceptAllCookiesButton() {
+
         String acceptAllCookiesButtonXpath = "//*[@id=\"cm_cookie_notification\"]/div/div/div[2]/button";
+        boolean acceptAllCookiesButton = driver.findElement(By.xpath(acceptAllCookiesButtonXpath)).isDisplayed();
+
+        assertThat(acceptAllCookiesButton, is(true));
         clickElement(By.xpath(acceptAllCookiesButtonXpath));
+
     }
 
     public void cookieSuccessBannerIsDisplayed() {
@@ -66,6 +75,9 @@ public class ApplicationCookies extends BasePage {
 
     public void setCookiesPreferenceButton() {
         String setCookiesPreferenceButtonXpath = "//*[@id=\"cm_cookie_notification\"]/div/div/div[2]/a";
+        boolean cookiesPreferenceButton = driver.findElement(By.xpath(setCookiesPreferenceButtonXpath)).isEnabled();
+
+        assertThat(cookiesPreferenceButton, is(true));
         clickElement(By.xpath(setCookiesPreferenceButtonXpath));
     }
 
@@ -92,5 +104,16 @@ public class ApplicationCookies extends BasePage {
         String actualPageTitle = getElementText(By.className(pageTitleClass));
         assertThat(actualPageTitle, containsString(pageTitleText));
         return this;
+    }
+
+    public void cookiePolicyLink(){
+        WebElement cookiesLink = driver.findElement(By.xpath(cookiesLinkXpath));
+        cookiesLink.click();
+    }
+
+    public void cookiePage(String pageTitle){
+        String cookiePageHeading = getElementText(By.xpath("//*[@id=\"main-content\"]/div[1]/div/h2[1]"));
+        assertThat(cookiePageHeading, containsString(pageTitle));
+
     }
 }

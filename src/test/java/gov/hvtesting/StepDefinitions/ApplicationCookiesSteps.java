@@ -4,6 +4,7 @@ import gov.hvtesting.framework.TestContext;
 import gov.hvtesting.pages.ApplicationCookies;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class ApplicationCookiesSteps {
 
@@ -13,14 +14,20 @@ public class ApplicationCookiesSteps {
         applicationCookies = context.getPageObjectManager().getCheckApplicationCookies();
     }
 
-    @Then("I should be present with the cookie banner")
+    @And("I should be present with the cookie banner")
     public void iCheckTheCookieBanner() {
         applicationCookies.cookieBanner();
     }
 
-    @Then("I check if the cookie link is in the footer")
+    @Then("I should be see the cookie link in the footer")
      public void linksInTheFooter(){
         applicationCookies.checkCookieLinksIsVisible();
+    }
+
+    @When("I click the link, I should be taken to the {string} page")
+    public void navigatedToCookiesPage(String pageTitle){
+        applicationCookies.cookiePolicyLink();
+        applicationCookies.cookiePage(pageTitle);
     }
 
     @And("The banner should contain the following cookie banner wording")
@@ -28,7 +35,7 @@ public class ApplicationCookiesSteps {
         applicationCookies.cookieBannerText();
     }
 
-    @And("I click the Accept all cookies button")
+    @Then("I click the Accept all cookies button")
     public void iClickAcceptAllCookiesButton() {
         applicationCookies.acceptAllCookiesButton();
     }
@@ -36,11 +43,6 @@ public class ApplicationCookiesSteps {
     @Then("I am presented with the success banner and I click Hide")
     public void cookieSuccessBannerIsDisplayed() {
         applicationCookies.cookieSuccessBannerIsDisplayed();
-    }
-
-    @And("I check if the banner is hidden")
-    public void cookieSuccessBannerIsHidden() {
-        applicationCookies.cookieSuccessBannerIsHidden();
     }
 
     @And("I click Save changes button")
