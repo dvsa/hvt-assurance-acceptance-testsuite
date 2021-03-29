@@ -1,19 +1,18 @@
 package gov.hvtesting.pages;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-
+import gov.hvtesting.framework.PropertyManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import gov.hvtesting.framework.PropertyManager;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class NearestAtfSearchPage extends BasePage {
 
     private static final String errorMessageText = "Enter a real postcode";
     private static final String headerText = "Find a test centre for an HGV, bus or trailer MOT";
     private String postcodeFieldId = "postcode";
-    private String findButtonId = "//button[@type='submit']";
+    private String findButtonId = "//*[@id=\"postcode-find-button\"]";
     private String errorMessageId = "postcode-error";
     private String headerClass = "govuk-heading-xl";
     protected RemoteWebDriver driver;
