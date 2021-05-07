@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "a18c2bb3-f2c5-425e-bd8b-670431e37b3a",
+		"name": "HVT ATF - allowing an Authorised Testing Facility to update their availablity",
+		"description": "# HVT ATF - allowing an Authorised Testing Facility to update their availability\n\nThis collection will allow a member of the development team to update an Authorised Testing Facility to update their availability, this can be done for a single Authorised Testing Facility or by using the collection runner for a bulk number Authorised Testing Facility.\n\n## Update their availability for a bulk numberAuthorised Testing Facility using collection runner.\n\nTo update availability for a bulk number Authorised Testing Facility, use the collection runner. You will need to have a CSV file will the following: \n\n* **ATF** - Which should be the Authorised Testing Facility name\n* **token** - Which will be the unique token for the Authorised Testing Facility\n* **availability** - This should be set to either true or false depending on what availability you want to set for that Authorised Testing Facility\n\n```javascript\ntrue = Authorised Testing Facility can take more MOT bookings\nfalse = Authorised Testing Facility can not take anymore MOT bookings\n```\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET: ATF ",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b1904722-eebd-4b6d-9408-239d60355f9b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a3acc407-b66d-4454-b53c-0740cc3bff60",
+						"exec": [
+							"tests[\"Body contains atf Name\"] = responseBody.has(data.ATF);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"token\" : \"{{token}}\"\n}"
+				},
+				"url": {
+					"raw": "https://int.confirm-mot-test-availability.service.gov.uk/update?token={{token}}",
+					"protocol": "https",
+					"host": [
+						"int",
+						"confirm-mot-test-availability",
+						"service",
+						"gov",
+						"uk"
+					],
+					"path": [
+						"update"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"description": "Token - A unique token created for an ATF which can be found in the DB once this has been generated\n"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: ATF Update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "af39675e-f7ef-4eb9-9eb4-6b772b42ae61",
+						"exec": [
+							"tests[\"Body contains atf Name\"] = responseBody.has(data.ATF);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fec88b7f-2eae-4efa-99fb-c1209b3c2534",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"availability\" : \"{{availability}}\"\n}"
+				},
+				"url": {
+					"raw": "https://int.confirm-mot-test-availability.service.gov.uk/confirm?token={{token}}",
+					"protocol": "https",
+					"host": [
+						"int",
+						"confirm-mot-test-availability",
+						"service",
+						"gov",
+						"uk"
+					],
+					"path": [
+						"confirm"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"description": "Token - A unique token created for an ATF which can be found in the DB once this has been generated\n"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e3ad423d-cd8a-4e86-8931-bd186c51c913",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "ccf097aa-d967-403c-a72b-15602811c682",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
