@@ -17,7 +17,7 @@ public class Hooks {
 
     public Hooks(TestContext context) {
         testContext = context;
-        dynamoDbApi = new DynamoDbApi();
+        //dynamoDbApi = new DynamoDbApi();
     }
 
     @Before("@UI")
@@ -27,6 +27,7 @@ public class Hooks {
 
     @Before("@TestData")
     public void PrepareTestData() {
+        dynamoDbApi = new DynamoDbApi();
         String atfId = dynamoDbApi.getAtfId();
         PropertyManager.getInstance().setAtfId(atfId);
     }

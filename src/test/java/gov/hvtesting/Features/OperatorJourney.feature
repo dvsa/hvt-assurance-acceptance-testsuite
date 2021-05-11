@@ -8,15 +8,7 @@ Feature: Operator Journey
     Then I am on Nearest ATF Results page for "AB10 1AA"
     When I click back button
     Then I am on Nearest ATF Search page
-
-
-  @UI
-  Scenario: Operator can search for nearest ATF in UI
-    Given I go to Nearest ATF Search page
-    When I fill in my postcode with "AB101AA"
-    Then I am on Nearest ATF Results page for "AB10 1AA"
-    And I can see 50 nearest ATFs ordered
-
+    
   @UI
   Scenario: user cannot search for nearest ATF in UI with invalid inputs
     Given I go to Nearest ATF Search page
