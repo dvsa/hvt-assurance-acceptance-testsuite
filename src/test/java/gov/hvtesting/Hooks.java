@@ -28,7 +28,7 @@ public class Hooks {
     @Before("@TestData")
     public void PrepareTestData() {
         String atfId = dynamoDbApi.getAtfId();
-        PropertyManager.getInstance(true).setAtfId(atfId);
+        PropertyManager.getInstance().setAtfId(atfId);
     }
 
     @After("@UI")

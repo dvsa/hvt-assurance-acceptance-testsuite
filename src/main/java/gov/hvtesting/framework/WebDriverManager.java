@@ -12,16 +12,10 @@ public class WebDriverManager {
 
     public RemoteWebDriver createDriver() {
         String baseUrl = "";
-        //if (isLocal().equals("true")) {
-        if(true){
-            baseUrl = PropertyManager.getInstance(true).getURL();
-            System.setProperty("webdriver.chrome.driver", LOCAL_CHROME_DRIVER_FILE_PATH);
-            driver = new ChromeDriver();
-        } else {
-            baseUrl = PropertyManager.getInstance(false).getURL();
-        }
+        baseUrl = PropertyManager.getInstance().getURL();
+        System.setProperty("webdriver.chrome.driver", LOCAL_CHROME_DRIVER_FILE_PATH);
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
-        //driver.get(baseUrl);
         return driver;
     }
 

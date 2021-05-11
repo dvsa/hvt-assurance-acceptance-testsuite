@@ -43,7 +43,7 @@ public class ConfirmationPage extends BasePage {
     }
 
     public void navigateToConfirmationPage(String token) {
-        String url = PropertyManager.getInstance(true).getUpdateAvailabilityUrl();
+        String url = PropertyManager.getInstance().getUpdateAvailabilityUrl();
         driver.get(url + token);
     }
 

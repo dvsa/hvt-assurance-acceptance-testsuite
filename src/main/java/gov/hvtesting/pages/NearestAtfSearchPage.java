@@ -23,7 +23,7 @@ public class NearestAtfSearchPage extends BasePage {
     }
 
     public void navigateToSearchPage() {
-        String url = PropertyManager.getInstance(true).getSearchNearestAtfUrl();
+        String url = PropertyManager.getInstance().getSearchNearestAtfUrl();
         driver.get(url);
     }
 
