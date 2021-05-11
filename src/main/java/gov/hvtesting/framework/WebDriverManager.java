@@ -11,8 +11,6 @@ public class WebDriverManager {
     private DesiredCapabilities dr = null;
 
     public RemoteWebDriver createDriver() {
-        String baseUrl = "";
-        baseUrl = PropertyManager.getInstance().getURL();
         System.setProperty("webdriver.chrome.driver", LOCAL_CHROME_DRIVER_FILE_PATH);
         driver = new ChromeDriver();
         driver.manage().window().maximize();
