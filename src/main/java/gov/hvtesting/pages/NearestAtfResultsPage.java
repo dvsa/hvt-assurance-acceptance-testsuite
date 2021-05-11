@@ -47,7 +47,7 @@ public class NearestAtfResultsPage extends BasePage {
     public NearestAtfResultsPage(RemoteWebDriver driver) {
         super(driver);
         this.driver = driver;
-        dynamoDbApi = new DynamoDbApi();
+        //dynamoDbApi = new DynamoDbApi();
     }
 
     public NearestAtfResultsPage checkHeader(String postcode) {
