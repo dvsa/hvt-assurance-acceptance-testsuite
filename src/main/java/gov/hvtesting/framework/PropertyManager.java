@@ -41,7 +41,6 @@ public class PropertyManager {
         } catch (IOException e) {
             System.out.println("Configuration properties file cannot be found in the given path: " + path);
         }
-        isLocal = Boolean.getBoolean(prop.getProperty("test.isLocal"));
         url = prop.getProperty("test.baseUrl");
         secret = prop.getProperty("test.secret");
         updateAvailabilityUrl = prop.getProperty("test.updateAvailabilityUrl");
