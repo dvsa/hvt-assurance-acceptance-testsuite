@@ -7,8 +7,6 @@ import java.util.Properties;
 
 public class PropertyManager {
     private static final Object lock = new Object();
-    private static final String LOCAL_PROPERTIES_FILE_PATH = "src/test/resources/test.properties";
-    private static final String REMOTE_PROPERTIES_FILE_PATH = "src/test/resources/remote.properties";
     private static PropertyManager instance;
     private static Boolean isLocal;
     private static String url;
@@ -23,11 +21,12 @@ public class PropertyManager {
     private static String tokenGeneratorHost;
     private static String tokenGeneratorPort;
 
-    public static PropertyManager getInstance(Boolean isLocal) {
-        String propertiesFilePath = isLocal ? LOCAL_PROPERTIES_FILE_PATH : REMOTE_PROPERTIES_FILE_PATH;
+    public static PropertyManager getInstance() {
         if (instance == null) {
             synchronized (lock) {
                 instance = new PropertyManager();
+                String env = instance.getEnvironmentFile();
+                String propertiesFilePath = String.format("src/test/resources/%s.properties", env);
                 instance.loadData(propertiesFilePath);
             }
         }
@@ -42,7 +41,6 @@ public class PropertyManager {
         } catch (IOException e) {
             System.out.println("Configuration properties file cannot be found in the given path: " + path);
         }
-        isLocal = Boolean.getBoolean(prop.getProperty("test.isLocal"));
         url = prop.getProperty("test.baseUrl");
         secret = prop.getProperty("test.secret");
         updateAvailabilityUrl = prop.getProperty("test.updateAvailabilityUrl");
@@ -58,6 +56,14 @@ public class PropertyManager {
 
     public String getURL() {
         return url;
+    }
+
+    private String getEnvironmentFile() {
+        String propValue = "test";
+        if (System.getProperty("env") != null) {
+            propValue = System.getProperty("env");
+        }
+        return propValue;
     }
 
     public Boolean isLocal() {

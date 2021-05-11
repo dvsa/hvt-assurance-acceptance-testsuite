@@ -29,7 +29,7 @@ public class Hooks {
     public void PrepareTestData() {
         dynamoDbApi = new DynamoDbApi();
         String atfId = dynamoDbApi.getAtfId();
-        PropertyManager.getInstance(true).setAtfId(atfId);
+        PropertyManager.getInstance().setAtfId(atfId);
     }
 
     @After("@UI")

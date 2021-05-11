@@ -34,7 +34,7 @@ public class DynamoDbSteps {
         testContext = context;
         confirmationPage = testContext.getPageObjectManager().getConfirmationPage();
         dateUtil = new DateUtil();
-        ATF_ID = PropertyManager.getInstance(true).getAtfId();
+        ATF_ID = PropertyManager.getInstance().getAtfId();
     }
 
     @Then("^ATF availability is set to (some availability|fully booked)$")
