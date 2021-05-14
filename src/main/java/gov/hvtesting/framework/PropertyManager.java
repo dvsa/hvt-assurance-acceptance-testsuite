@@ -20,6 +20,7 @@ public class PropertyManager {
     private static String atfId;
     private static String tokenGeneratorHost;
     private static String tokenGeneratorPort;
+    private static String dynamoDbUrl;
 
     public static PropertyManager getInstance() {
         if (instance == null) {
@@ -41,6 +42,7 @@ public class PropertyManager {
         } catch (IOException e) {
             System.out.println("Configuration properties file cannot be found in the given path: " + path);
         }
+        isLocal = Boolean.parseBoolean(prop.getProperty("test.isLocal"));
         url = prop.getProperty("test.baseUrl");
         secret = prop.getProperty("test.secret");
         updateAvailabilityUrl = prop.getProperty("test.updateAvailabilityUrl");
@@ -52,6 +54,7 @@ public class PropertyManager {
         atfId = prop.getProperty("test.atfId");
         tokenGeneratorHost = prop.getProperty("test.tokenGeneratorHost");
         tokenGeneratorPort = prop.getProperty("test.tokenGeneratorPort");
+        dynamoDbUrl = prop.getProperty("test.dynamoDbUrl");
     }
 
     public String getURL() {
@@ -102,15 +105,13 @@ public class PropertyManager {
         return atfId;
     }
 
-    public void setAtfId(String id) {
-        atfId = id;
-    }
+    public void setAtfId(String id) { atfId = id; }
 
     public String getTokenGeneratorHost() {
         return tokenGeneratorHost;
     }
 
-    public String getTokenGeneratorPort() {
-        return tokenGeneratorPort;
-    }
+    public String getTokenGeneratorPort() { return tokenGeneratorPort; }
+
+    public String getDynamoDbUrl() { return dynamoDbUrl; }
 }

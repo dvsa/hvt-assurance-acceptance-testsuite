@@ -5,6 +5,11 @@ import static io.restassured.RestAssured.given;
 import java.util.HashMap;
 import java.util.List;
 
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import gov.hvtesting.framework.dbModels.AuthorisedTestingFacilitiesItem;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,14 +17,32 @@ import io.restassured.response.Response;
 
 public class DynamoDbApi {
 
+    AmazonDynamoDB client;
+    DynamoDBMapper mapper;
     private String READ_API_HOST;
     private int READ_API_PORT;
     private static final String ATF_DATA_TABLE = "AuthorisedTestingFacilities";
 
 
     public DynamoDbApi() {
+        /**
+         * TODO
+         * Here we should deprecate using the dynamoDB api directly and use the AWS DynamoDB SDK
+         */
         READ_API_HOST = PropertyManager.getInstance().getReadApiHost();
         READ_API_PORT = Integer.decode(PropertyManager.getInstance().getReadApiPort());
+
+        // TODO use env instead of isLocal from propertyManager
+        PropertyManager propertyManager = PropertyManager.getInstance();
+        client = propertyManager.isLocal() ?
+                AmazonDynamoDBClientBuilder.standard()
+                        .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(propertyManager.getDynamoDbUrl(), "eu-west-1"))
+                        .build()
+                :
+                AmazonDynamoDBClientBuilder.standard()
+                        .build();
+
+        mapper = new DynamoDBMapper(this.client);
     }
 
     public Response getAtfAvailabilityData(String atfId) {
@@ -71,5 +94,18 @@ public class DynamoDbApi {
             i++;
         } while (!json.getString("id").equals(atfId));
         return json.getString("token");
+    }
+
+    public String getAtfToken(String atfId) throws Exception{
+        try{
+
+        AuthorisedTestingFacilitiesItem atfItem = mapper.load(AuthorisedTestingFacilitiesItem.class, atfId);
+        // TODO this step is currently failing to map the item from the db to the availability item. Error: AuthorisedTestingFacilitiesItem[availability]; could not unconvert attribute
+        String token = atfItem.getToken();
+        return token;
+        }
+        catch(Exception ex){
+            throw new Exception("Error getting the token for AtfId " + atfId + ". " + ex.getMessage());
+        }
     }
 }

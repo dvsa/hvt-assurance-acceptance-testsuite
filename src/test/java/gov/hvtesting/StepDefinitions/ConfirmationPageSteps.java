@@ -3,6 +3,7 @@ package gov.hvtesting.StepDefinitions;
 import gov.hvtesting.framework.DynamoDbApi;
 import gov.hvtesting.framework.PropertyManager;
 import gov.hvtesting.framework.TestContext;
+import gov.hvtesting.framework.TestData.AtfTestDataWithToken;
 import gov.hvtesting.framework.TokenGenerator;
 import gov.hvtesting.pages.ConfirmationPage;
 import io.cucumber.java.en.And;
@@ -30,8 +31,15 @@ public class ConfirmationPageSteps {
     @And("^I click the link to update the availability to (fully booked|yes we have availability)$")
     public void iChooseToFullyBookedLink(String availability) throws Exception {
         Boolean isAvailable = availability.equals("some availability");
-        tokenGenerator.generateToken(ATF_ID);
-        String token = dynamoDbApi.getToken(ATF_ID, isAvailable);
+        /**
+        // TODO remove call to set token as the setup data now does that
+        // The DynamoDB Api should be able to retrieve the token for the url
+        // Currently broken! See getAtfToken for more information
+        **/
+        //tokenGenerator.generateToken(ATF_ID);
+        //String token = dynamoDbApi.getToken(ATF_ID, isAvailable);
+        String atfId = new AtfTestDataWithToken().getAtfId();
+        String token = dynamoDbApi.getAtfToken(atfId);
         confirmationPage.navigateToConfirmationPage(token);
     }
 
