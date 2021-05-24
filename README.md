@@ -29,6 +29,12 @@ To run selected test(s), described with @myTag:. Tag avaliable are shown in the 
 ```shell
 mvn test -Dcucumber.filter.tags="@myTag"
 ```
+To run selected test(s), against a different property file then use the -Denv arg
+```shell
+mvn test -Dcucumber.filter.tags="@myTag" -Denv=int
+```
+In the above example int will look for a properties file called int.properties in resources
+
 
 ####Tags
 ```shell
