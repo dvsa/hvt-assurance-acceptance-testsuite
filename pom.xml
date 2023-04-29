@@ -79,7 +79,7 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-dynamodb</artifactId>
-            <version>1.11.875</version>
+            <version>1.12.459</version>
         </dependency>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
@@ -99,7 +99,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20200518</version>
+            <version>20230227</version>
         </dependency>
     </dependencies>
     <repositories>
